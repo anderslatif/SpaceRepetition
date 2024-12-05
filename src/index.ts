@@ -1,2 +1,2 @@
-export { spacedRepetition } from './spacedRepetition.js';
+export { spaceRepetition } from './spaceRepetition.js';
 
