@@ -1,0 +1,10 @@
+# Ignore all files and directories
+*
+
+# Include necessary files and directories
+!dist/**
+!package.json
+!README.md
+!LICENSE
+
+

@@ -1,0 +1,44 @@
+{
+    "name": "spacerepetition",
+    "version": "0.0.1",
+    "description": "Spaced Repetition Library",
+    "main": "dist/spacedrepetition.min.js",
+    "types": "dist/spacedrepetition.min.d.ts",
+    "type": "module",
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "build": "tsc",
+        "lint": "eslint --config eslint.config.js --fix",
+        "bundle": "esbuild src/index.ts --bundle --minify --sourcemap --format=iife --global-name=SpacedRepetition --outfile=dist/spacedrepetition.min.js",
+        "prepare": "npm run build && npm run bundle"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/anderslatif/SpacedRepetition.git"
+    },
+    "keywords": [
+        "spaced",
+        "repetition",
+        "learning",
+        "learning",
+        "algorithm",
+        "library",
+        "education",
+        "educational"
+    ],
+    "author": "Anders Latif",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/anderslatif/SpacedRepetition/issues"
+    },
+    "homepage": "https://github.com/anderslatif/SpacedRepetition#readme",
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^8.17.0",
+        "@typescript-eslint/parser": "^8.17.0",
+        "esbuild": "^0.24.0",
+        "eslint": "^9.16.0",
+        "ts-node-dev": "^2.0.0",
+        "tsx": "^4.19.2",
+        "typescript": "^5.7.2"
+    }
+}
