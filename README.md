@@ -2,18 +2,21 @@
 
 A Spaced Repetition Library
 
+<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png" alt="space spaced repetition logo" width="150" >
+
+
 ---
 
 ## Install + Import
 
 ```bash
-$ npm install spacedrepetition
+$ npm install spacerepetition
 ```
 
 And import it
 
 ```javascript
-import { spaceRepetition } from 'spacerepetition'
+import { createFlashcards } from 'spacerepetition'
 ```
 
 Or you can include it from a CDN:
@@ -26,7 +29,7 @@ And use it:
 
 ```html
 <script>
-    const flashcards = SpaceRepetition.spaceRepetition(5)
+    const flashcards = Spacerepetition.createFlashcards(5)
 </script>
 ```
 
@@ -34,10 +37,10 @@ And use it:
 
 ## Usage
 
-It doesn't matter what your data looks like 
+It doesn't matter what your data looks like, it will always return an array of flashcards:
 
 ```javascript
-const flashcards = SpaceRepetition.spaceRepetition([1, "two"])
+const flashcards = createFlashcards([1, "two"])
 /*  returns:
     {
         "1": {
@@ -57,16 +60,21 @@ const flashcards = SpaceRepetition.spaceRepetition([1, "two"])
 ```
 
 ```javascript
-const flashcards = SpaceRepetition.spaceRepetition([{ "key": "value" }, { "key2": "value2" }])
+const flashcards = createFlashcards([{ front: "question", back: "answer" }, { front: "question", back: "answer" }])
 ```
+
+Just avoid using the following keys which will conflict with the ones used by the library:
+
+<!-- todo  -->
 
 ---
 
 ## Spaced Repetition Algorithms
 
 ```javascript
-const flashcards = SpaceRepetition.spaceRepetition([])
-const flashcards = SpaceRepetition.spaceRepetition([], "sm2")
+const flashcards = createFlashcards([])
+const flashcards = createFlashcards([], "sm2") 
+const flashcards = createFlashcards([], "sm2")
 ```
 
 <!-- todo explain what it must adhere to -->
@@ -77,5 +85,30 @@ function myAlgorithm() {
     return "myAlgorithm"
 }
 
-const flashcards = SpaceRepetition.spaceRepetition([], myAlgorithm)
+const flashcards = createFlashcards([], myAlgorithm)
+```
+
+---
+
+## Config
+
+You can also pass a config object as the third parameter:
+
+```javascript
+const flashcards = createFlashcards([], "default", {
+    "initial": 5,
+    "interval": 10,
+    "factor": 2.5
+})
+```
+
+
+---
+
+## Statistics
+
+You can get statistics about the flashcards:
+
+```javascript
+// todo 
 ```

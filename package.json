@@ -10,7 +10,8 @@
         "build": "tsc",
         "lint": "eslint --config eslint.config.js --fix",
         "bundle": "esbuild src/index.ts --bundle --minify --sourcemap --format=iife --global-name=SpaceRepetition --outfile=dist/spacerepetition.min.js",
-        "prepare": "npm run build && npm run bundle"
+        "prepare": "npm run build && npm run bundle",
+        "evaluate": "npm run build && node tests/evaluateLearningAlgorithm.js"
     },
     "repository": {
         "type": "git",
