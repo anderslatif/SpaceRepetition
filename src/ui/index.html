@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%; margin: 0;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards UI</title>
+</head>
+<body style="height: 100%; margin: 0; display: flex; flex-direction: column;">
+
+    <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center;">
+        <div id="spacerepetition-ui-internal-card"
+            onclick="showBack()"
+            style="
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                width: 96%; 
+                height: 92%; 
+                padding: 2rem;
+                border-radius: 16px; 
+                border: 1px solid rgba(0, 0, 0, 0.1); 
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 1);
+                font-size: calc(1rem + 4vw); 
+                background-color: white;
+            ">
+        </div>
+    </div>
+
+    <div id="spacerepetition-ui-internal-review-row" 
+        style="
+            width: 100%; 
+            display: flex; 
+            min-height: 5vh; 
+            position: fixed; 
+            bottom: 0; 
+            background-color: white; 
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); 
+            padding-bottom: 0.5rem;">
+    </div>
+
+</div>
+
+    <script>
+        const cards = [
+            { front: "Front 1", back: "Back 1" },
+            { front: "Front 2", back: "Back 2" },
+            { front: "Front 3", back: "Back 3" },
+            { front: "Front 4", back: "Back 4" },
+            { front: "Front 5", back: "Back 5" },
+        ];
+
+        const reviewButtonRow = `
+            <button onclick="nextCard()" style="flex: 1; background-color: red;">Again</button>
+            <button onclick="nextCard()" style="flex: 1; background-color: yellow;">Hard</button>
+            <button onclick="nextCard()" style="flex: 1; background-color: lime;">Good</button>
+            <button onclick="nextCard()" style="flex: 1; background-color: blue;">Easy</button>
+        `;
+
+        const cardDiv = document.getElementById("spacerepetition-ui-internal-card");
+        const reviewButtonRowDiv= document.getElementById("spacerepetition-ui-internal-review-row");
+
+        function showFront() {
+            cardDiv.innerHTML = cards[0].front;
+            reviewButtonRowDiv.innerHTML = "";
+        }
+        
+        function showBack() {
+            cardDiv.innerHTML = cards[0].back;
+            reviewButtonRowDiv.innerHTML = reviewButtonRow;
+        }
+
+        function nextCard() {
+            cards.push(cards.shift());
+            showFront();
+        }
+
+        showFront();
+    </script>
+</body>
+</html>

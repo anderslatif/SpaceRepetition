@@ -1,4 +1,8 @@
 export interface Flashcard {
+    front: any,
+    back: any,
+
+    // algorithm settings
     interval: number;
     repetition: number;
     dueDate: number;
@@ -6,6 +10,7 @@ export interface Flashcard {
     startingInterval: number;
     easeFactor: number;
     minEaseFactor: number;
+    
     again(): void;
     hard(): void;
     good(): void;

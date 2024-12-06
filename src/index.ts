@@ -7,16 +7,16 @@ import { Flashcard } from './types.js';
 import { createFlashcards } from './flashcards/createFlashcards.js';
 import { getNextCard } from './flashcards/flashcardScheduler.js';
 
-// const flashcards: Flashcard[] = createFlashcards(
-// [{
-//     question: "1q?",
-//     answer: "a!",
-// },
-// {
-//     question: "2q?",
-//     answer: "a!",
-// }
-// ]);
+const flashcards: Flashcard[] = createFlashcards(
+[{
+    question: "1q?",
+    answer: "a!",
+},
+{
+    question: "2q?",
+    answer: "a!",
+}
+]);
 
 
 // let nextCard = getNextCard(flashcards);
@@ -28,3 +28,6 @@ import { getNextCard } from './flashcards/flashcardScheduler.js';
 // console.log(nextCard);
 
 
+import { createUI } from './ui/createUI.js';
+
+createUI(flashcards, "1q?", "a!");

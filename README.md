@@ -2,7 +2,7 @@
 
 A Spaced Repetition Library
 
-<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png" alt="space spaced repetition logo" width="150" >
+<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png" alt="space spaced repetition logo" width="200" >
 
 
 ---
