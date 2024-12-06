@@ -4,11 +4,8 @@ export interface Flashcard {
     dueDate: number;
     learningAlgorithm: LearningAlgorithm;
     startingInterval: number;
-    intervalModifier: number;
-    minInterval: number;
-    maxInterval: number;
     easeFactor: number;
-    easeFactorDecayRate: number;
+    minEaseFactor: number;
     again(): void;
     hard(): void;
     good(): void;
