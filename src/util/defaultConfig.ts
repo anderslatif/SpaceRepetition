@@ -3,6 +3,3 @@ export const defaultCardConfig = {
     interval: 1,
     repetition: 0,
 };
-  
-
-
