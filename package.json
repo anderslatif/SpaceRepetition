@@ -1,16 +1,16 @@
 {
     "name": "spacerepetition",
-    "version": "0.0.12",
+    "version": "0.0.16",
     "description": "Spaced Repetition Library",
     "main": "dist/spacerepetition.min.js",
     "types": "dist/spacerepetition.min.d.ts",
     "type": "module",
     "scripts": {
         "dev": "tsx watch src/index.ts",
-        "build": "tsc",
         "lint": "eslint --config eslint.config.js --fix",
         "bundle": "esbuild src/index.ts --bundle --minify --sourcemap --format=iife --global-name=SpaceRepetition --outfile=dist/spacerepetition.min.js",
-        "prepare": "npm run build && npm run bundle",
+        "generate-types": "tsc --emitDeclarationOnly --declaration --outDir dist",
+        "build": "npm run generate-types && npm run bundle",
         "evaluate": "npm run build && node tests/evaluateLearningAlgorithm.js"
     },
     "repository": {
