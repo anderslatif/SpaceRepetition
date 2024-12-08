@@ -11,11 +11,11 @@ export interface Flashcard {
     easeFactor: number;
     minEaseFactor: number;
     
+    updateDifficulty(difficulty: number): void;
     again(): void;
     hard(): void;
     good(): void;
     easy(): void;
-    updateCard(quality: number): void;
 };
 
 export type LearningAlgorithm = "sm-2" | "default" | "";

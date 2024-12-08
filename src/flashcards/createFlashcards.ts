@@ -28,20 +28,20 @@ function createFlashcard(card: any, config: object): Flashcard {
     ...card,
     ...config,
     dueDate: card.dueDate ?? Date.now(),
-    updateCard(quality: number) {
-      updateAlgorithm(this, quality, this.learningAlgorithm);
+    updateDifficulty(difficulty: number) {
+      updateAlgorithm(this, difficulty, this.learningAlgorithm);
     },
     again() {
-      this.updateCard(0);
+      this.updateDifficulty(0);
     },
     hard() {
-      this.updateCard(1);
+      this.updateDifficulty(1);
     },
     good() {
-      this.updateCard(2);
+      this.updateDifficulty(2);
     },
     easy() {
-      this.updateCard(3);
+      this.updateDifficulty(3);
     },
   } as Flashcard;
 }

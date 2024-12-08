@@ -1,22 +1,23 @@
 export { createFlashcards } from './flashcards/createFlashcards.js';
 export { getNextCard } from './flashcards/flashcardScheduler.js';
+export { createUI } from './ui/createUI.js';
 
 
 // todo delete
-import { Flashcard } from './types.js';
-import { createFlashcards } from './flashcards/createFlashcards.js';
-import { getNextCard } from './flashcards/flashcardScheduler.js';
+// import { Flashcard } from './types.js';
+// import { createFlashcards } from './flashcards/createFlashcards.js';
+// import { getNextCard } from './flashcards/flashcardScheduler.js';
 
-const flashcards: Flashcard[] = createFlashcards(
-[{
-    question: "1q?",
-    answer: "a!",
-},
-{
-    question: "2q?",
-    answer: "a!",
-}
-]);
+// const flashcards: Flashcard[] = createFlashcards(
+// [{
+//     question: "1q?",
+//     answer: "a!",
+// },
+// {
+//     question: "2q?",
+//     answer: "a!",
+// }
+// ]);
 
 
 // let nextCard = getNextCard(flashcards);
@@ -28,6 +29,13 @@ const flashcards: Flashcard[] = createFlashcards(
 // console.log(nextCard);
 
 
-import { createUI } from './ui/createUI.js';
+// import { createUI } from './ui/createUI.js';
 
-createUI(flashcards, "1q?", "a!");
+// const cards = [
+//     { front: "<h1 style='color: red'>Front 1</h1>", back: "<p style='color: blue'>Back 1</p>" },
+//     { front: "<h1 style='color: red'>Front 1</h1>", back: "<p style='color: blue'>Back 1</p>" },
+//     { front: "<h1 style='color: red'>Front 1</h1>", back: "<p style='color: blue'>Back 1</p>" },
+// ];
+// const flashcards = createFlashcards(cards);
+// const htmlString = createUI(flashcards);
+// console.log(htmlString);
