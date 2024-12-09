@@ -1,2 +1,2 @@
-const SpaceRepetition = require('./spacerepetition.esm.js');
+const SpaceRepetition = require('./spacerepetition.cjs.js');
 module.exports = SpaceRepetition;
