@@ -127,7 +127,7 @@ You can use the built-in UI for HTML. You can style the `front` and `back` prope
 <html lang="en" style="height: 100%; margin: 0;">
 <head>
     <title>Space Repetition</title>
-    <script src="https://cdn.jsdelivr.net/npm/spacerepetition@0.0.31/dist/spacerepetition.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/spacerepetition/dist/spacerepetition.min.js"></script>
 </head>
 <body style="margin: 0; padding: 0; height: 100%; display: flex; flex-direction: column;">
     
