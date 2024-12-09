@@ -163,7 +163,7 @@ It's a 3 step process:
 
 The end result will look like this:
 
-<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/ui_example.png" alt="space spaced repetition logo" width="100" >
+<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/ui_example.png" alt="space spaced repetition logo" width="600" >
 
 
 ---
@@ -177,7 +177,7 @@ You can get statistics about the flashcards:
 
 ```
 
----
+
 
 [npm-version-image]: https://img.shields.io/npm/v/spacerepetition.svg
 [npm-url]: https://www.npmjs.com/package/spacerepetition
