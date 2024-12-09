@@ -1,5 +1,4 @@
-import { createFlashcards } from '../dist/flashcards/createFlashcards.js';
-import { getNextCard } from '../dist/flashcards/flashcardScheduler.js';
+import { createFlashcards, getNextCard } from '../dist/spacerepetition.esm.js';
 
 // Test the algorithm on a dataset
 function generateFlashcards(count) {
@@ -15,7 +14,7 @@ function simulateReview(flashcards, days) {
           // Simulate a quality score: 70% chance of "good", 10% each for "again", "hard", and "easy"
           const random = Math.random();
           const quality = random < 0.1 ? 0 : random < 0.2 ? 1 : random < 0.9 ? 2 : 3;
-          nextCard.updateCard(quality);
+          nextCard.updateDifficulty(quality);
           nextCard = getNextCard(flashcards);
       }
       currentDate += 24 * 60 * 60 * 1000; // Move to the next day
