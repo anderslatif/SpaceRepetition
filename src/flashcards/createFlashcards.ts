@@ -45,3 +45,4 @@ function createFlashcard(card: any, config: object): Flashcard {
     },
   } as Flashcard;
 }
+

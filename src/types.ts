@@ -18,4 +18,4 @@ export interface Flashcard {
     easy(): void;
 };
 
-export type LearningAlgorithm = "sm-2" | "default" | "";
+export type LearningAlgorithm = "sm-2" | "default" | "" | ((card?: Flashcard, difficulty?: any) => void);

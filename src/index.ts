@@ -20,6 +20,24 @@ export { createUI } from './ui/createUI.js';
 // ]);
 
 
+
+// const card = {
+//     answer: "a!",
+//     hello: () => console.log("hello")
+// }
+
+// const htmlString = `
+// const card = $$$$card$$$$;
+// `.replace(
+//     "$$$$card$$$$",
+//     JSON.stringify(card, (key, value) =>
+//         typeof value === "function" ? value.toString() : value
+//     )
+// );
+
+// console.log(htmlString);
+
+
 // let nextCard = getNextCard(flashcards);
 // nextCard?.good();
 // nextCard = getNextCard(flashcards);

@@ -100,7 +100,7 @@ const config = {
     interval: 7
 }
 
-const flashcards = createFlashcards([], undefiend, config)
+const flashcards = createFlashcards([], undefined, config)
 ```
 
 | Key              | Default Value | Target Algorithm |
