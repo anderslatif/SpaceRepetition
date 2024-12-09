@@ -93,7 +93,7 @@ const flashcards = createFlashcards([], myAlgorithm)
 
 ## Config
 
-You can also pass a config object as the third parameter:
+Besides manually adjusting values on the cards, you can also pass a config object as the third parameter to initialize cards with different values:
 
 ```javascript
 const config = {
@@ -103,6 +103,9 @@ const config = {
 const flashcards = createFlashcards([], undefined, config)
 ```
 
+Here is what the config object looks like:
+
+
 | Key              | Default Value | Target Algorithm |
 |------------------|---------------|------------------|
 | easeFactor       | 2.7           | SM-2             |
@@ -110,6 +113,15 @@ const flashcards = createFlashcards([], undefined, config)
 | interval         | 1             | SM-2             |
 | repetition       | 0             | SM-2             |
 
+
+---
+
+## UI
+
+
+<!-- todo make the HTML collapsible -->
+
+<!-- todo add image -->
 
 <!-- ---
 

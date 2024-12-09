@@ -1,23 +1,28 @@
 {
     "name": "spacerepetition",
-    "version": "0.0.27",
+    "version": "0.0.31",
     "description": "Spaced Repetition Library",
-    "main": "dist/spacerepetition.min.js",
+    "main": "dist/spacerepetition.cjs.js",
+    "module": "dist/spacerepetition.esm.js",
+    "exports": {
+        "import": "./dist/spacerepetition.esm.js",
+        "require": "./dist/spacerepetition.cjs.js"
+    },
+    "browser": "./dist/spacerepetition.min.js",
     "types": "dist/spacerepetition.min.d.ts",
     "type": "module",
-    "exports": {
-        ".": "./dist/spacerepetition.min.js"
-    },
     "files": [
         "dist"
     ],
     "scripts": {
-        "dev": "tsx watch src/index.ts",
-        "lint": "eslint --config eslint.config.js --fix",
-        "bundle": "esbuild src/index.ts --bundle --minify --sourcemap --format=esm --outfile=dist/spacerepetition.min.js",
-        "generate-types": "tsc --emitDeclarationOnly --declaration --outDir dist",
-        "build": "npm run generate-types && npm run bundle",
-        "evaluate": "npm run build && node tests/evaluateLearningAlgorithm.js"
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint --config eslint.config.js --fix",
+    "generate-types": "tsc --emitDeclarationOnly --declaration --outDir dist",
+    "bundle-cjs": "esbuild src/index.ts --bundle --format=cjs --outfile=dist/spacerepetition.cjs.js",
+    "bundle-esm": "esbuild src/index.ts --bundle --format=esm --outfile=dist/spacerepetition.esm.js",
+    "bundle-iife": "esbuild src/index.ts --bundle --format=iife --global-name=SpaceRepetition --outfile=dist/spacerepetition.min.js",
+    "build": "npm run generate-types && npm run bundle-esm && npm run bundle-cjs && npm run bundle-iife",
+    "evaluate": "npm run build && node tests/evaluateLearningAlgorithm.js"
     },
     "repository": {
         "type": "git",
