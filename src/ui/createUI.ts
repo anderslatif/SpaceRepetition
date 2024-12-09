@@ -124,7 +124,8 @@ function startFlashcardsUI(flashcards) {
             if (currentCard) {
                 showFront();
             } else {
-                cardFront.innerHTML = "<p>No more cards!</p>";
+                cardBack.innerHTML = "<h1>No more cards!</>";
+                cardContainer?.removeEventListener("click", flipCard);
                 reviewButtonRowDiv.innerHTML = "";
             }
             cardContainer.style.top = "0";

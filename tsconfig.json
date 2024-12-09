@@ -7,7 +7,7 @@
       "strict": true,
       "esModuleInterop": true,
       "declaration": true,
-      "declarationDir": "./dist",
+      "declarationDir": "./dist/types",
       "sourceMap": true,
       "skipLibCheck": true
     },

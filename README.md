@@ -5,7 +5,7 @@ A Spaced Repetition Library
 [![NPM Version][npm-version-image]][npm-url]
 [![NPM Install Size][npm-install-size-image]][npm-install-size-url]
 
-<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png" alt="space spaced repetition logo" width="200" >
+<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/spacerepetitionlogo.png" alt="space spaced repetition logo" width="200" >
 
 
 ---
@@ -46,8 +46,10 @@ It doesn't matter what your data looks like, it will always return an array of f
 const flashcards = createFlashcards([{ front: "Question", back: "Answer" }])
 ```
 
+Here is what it returns:
+
 ```javascript
-/*  returns:
+/* 
 [
  {
     front: 'Question',
@@ -118,23 +120,64 @@ Here is what the config object looks like:
 
 ## UI
 
+You can use the built-in UI for HTML. You can style the `front` and `back` property with text or any HTML:
 
-<!-- todo make the HTML collapsible -->
+```html
+<!DOCTYPE html>
+<html lang="en" style="height: 100%; margin: 0;">
+<head>
+    <title>Space Repetition</title>
+    <script src="https://cdn.jsdelivr.net/npm/spacerepetition@0.0.31/dist/spacerepetition.min.js"></script>
+</head>
+<body style="margin: 0; padding: 0; height: 100%; display: flex; flex-direction: column;">
+    
+    <script>
+        const cards = [
+            {   front: "<h1 style='color: red'>Front 1</h1>", 
+                back: `<div><p style='color: blue;'>Space Repetition</p>
+                        <img src='https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png'>
+                       </div>` },
+            { front: "<h1 style='color: red'>Front 2</h1>", back: "<p style='color: blue'>Back 2</p>" },
+            { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
+        ];
 
-<!-- todo add image -->
+        const myFlashcards = SpaceRepetition.createFlashcards(cards);
 
-<!-- ---
+        const { template, startFlashcardsUI } = SpaceRepetition.createUI(myFlashcards);
 
-// todo 
+        document.body.insertAdjacentHTML('afterbegin', template);
+
+        startFlashcardsUI(myFlashcards);
+    </script>
+</body>
+</html>
+```
+
+It's a 3 step process:
+
+1. Genereate the flashcards. (This manual step allows you to provide existing flashcards or set their values).
+
+2. Generate the UI (styling, front, back, button row) and insert them in the document. Set the CSS values as seen above on the HTML and body tag.
+
+3. Call `startFlashcardsUI` with the flashcards you generated in step 1.
+
+The end result will look like this:
+
+<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/ui_example.png" alt="space spaced repetition logo" width="100" >
+
+
+---
+
 ## Statistics
 
+<!-- todo  -->
 You can get statistics about the flashcards:
 
 ```javascript
 
-``` -->
+```
 
-
+---
 
 [npm-version-image]: https://img.shields.io/npm/v/spacerepetition.svg
 [npm-url]: https://www.npmjs.com/package/spacerepetition
