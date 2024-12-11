@@ -1,6 +1,6 @@
 # Space Repetition
 
-A Spaced Repetition Library
+> A Spaced Repetition Library
 
 [![NPM Version][npm-version-image]][npm-url]
 [![NPM Install Size][npm-install-size-image]][npm-install-size-url]
@@ -81,7 +81,7 @@ But you could also pass your own algorithm. Both parameters are optional:
 
 
 
-You can also specify your own algorithm as long as it adhers to XXXXXXXX:
+You can also specify your own algorithm:
 
 ```javascript
 function myAlgorithm(card, difficulty) {
@@ -90,6 +90,8 @@ function myAlgorithm(card, difficulty) {
 
 const flashcards = createFlashcards([], myAlgorithm)
 ```
+
+
 
 ---
 
@@ -137,8 +139,7 @@ You can use the built-in UI for HTML. You can style the `front` and `back` prope
                 back: `<div><p style='color: blue;'>Space Repetition</p>
                         <img src='https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png'>
                        </div>` },
-            { front: "<h1 style='color: red'>Front 2</h1>", back: "<p style='color: blue'>Back 2</p>" },
-            { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
+            { front: "Front 2", back: "Back 2" },
         ];
 
         const myFlashcards = SpaceRepetition.createFlashcards(cards);
@@ -166,16 +167,16 @@ The end result will look like this:
 <img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/ui_example.png" alt="space spaced repetition logo" width="600" >
 
 
----
+    ---
 
-## Statistics
+    ## Statistics
 
-<!-- todo  -->
-You can get statistics about the flashcards:
+    <!-- todo  -->
+    You can get statistics about the flashcards:
 
-```javascript
+    ```javascript
 
-```
+    ```
 
 
 
