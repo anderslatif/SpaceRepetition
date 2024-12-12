@@ -1,10 +1,13 @@
 import { Flashcard, LearningAlgorithm } from '../types.js';
 import { defaultCardConfig } from "../util/defaultConfig.js"
-import { updateAlgorithm } from "../algorithms/updateAlgorithm.js"
-
+import Card from '../deck/Card.js';
 
 export function createFlashcards(cards: any, learningAlgorithm: LearningAlgorithm = "default", config?: object): Flashcard[] {
     const mergedConfig = { ...defaultCardConfig, ...config };
+
+    if (!cards) {
+        return [];
+    }
 
     if (Array.isArray(cards)) {
         return cards.map((card) => {
@@ -23,26 +26,7 @@ export function createFlashcards(cards: any, learningAlgorithm: LearningAlgorith
     }
 }
 
-function createFlashcard(card: any, config: object): Flashcard {
-  return {
-    ...card,
-    ...config,
-    dueDate: card.dueDate ?? Date.now(),
-    updateDifficulty(difficulty: number) {
-      updateAlgorithm(this, difficulty, this.learningAlgorithm);
-    },
-    again() {
-      this.updateDifficulty(0);
-    },
-    hard() {
-      this.updateDifficulty(1);
-    },
-    good() {
-      this.updateDifficulty(2);
-    },
-    easy() {
-      this.updateDifficulty(3);
-    },
-  } as Flashcard;
+export function createFlashcard(card: any, config: object): Flashcard {
+    return new Card(card, config);
 }
 

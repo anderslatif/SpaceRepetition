@@ -12,6 +12,8 @@ export default [
     },
     rules: {
       ...eslintPlugin.configs.recommended.rules,
+      indent: ["error", 4],
+      "@typescript-eslint/indent": ["error", 4],
     },
   },
 ];
