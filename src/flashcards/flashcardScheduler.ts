@@ -7,6 +7,8 @@ export function getNextCard(flashcards: Flashcard[]): Flashcard | undefined {
     if (dueCards.length === 0) {
         dueCards = flashcards.filter((card) => card.repetition === 1);
     } 
+
+    if (dueCards.length === 0) return undefined;
   
     const randomIndex = Math.floor(Math.random() * dueCards.length);
     return dueCards[randomIndex];

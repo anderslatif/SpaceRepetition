@@ -1,7 +1,7 @@
 import { Flashcard, HumanReadableDueDate } from "../types.js";
 
 import { learningAlgorithmSelector } from "../algorithms/algorithmSelector.js"
-
+import { defaultCardConfig } from "../util/defaultConfig.js";
 
 export default class Card implements Flashcard {
     interval: number;
@@ -19,19 +19,21 @@ export default class Card implements Flashcard {
             ...card
         };
 
-        this.interval = mergedCard.interval;
-        this.repetition = mergedCard.repetition;
-        this.easeFactor = mergedCard.easeFactor;
-        this.minEaseFactor = mergedCard.minEaseFactor;
+        // Initialize explicitly declared properties with defaults
+        this.interval = mergedCard.interval ?? 0;
+        this.repetition = mergedCard.repetition ?? 0;
+        this.easeFactor = mergedCard.easeFactor ?? 2.5;
+        this.minEaseFactor = mergedCard.minEaseFactor ?? 1.3;
         this.dueDate = mergedCard.dueDate ?? Date.now();
 
-        // Dynamically assign any other properties
+        // Dynamically assign remaining properties
         Object.keys(mergedCard).forEach(key => {
-          if (!(key in this)) {
-            this[key] = (mergedCard as Record<string, any>)[key];
-          }
+            if (!this.hasOwnProperty(key)) {
+                this[key] = (mergedCard as Record<string, any>)[key];
+            }
         });
     }
+  
   
     updateDifficulty(difficulty: number): void {
       learningAlgorithmSelector(this, difficulty, this.learningAlgorithm);
@@ -67,7 +69,7 @@ export default class Card implements Flashcard {
     }
 
     getPotentialDueDates(difficulties: number[]): number[] {
-        return difficulties.map(difficulty => this.getPotentialDueDate(difficulty));
+        return difficulties.map((difficulty) => this.getPotentialDueDate(difficulty));
     }
 
     getPotentialDueDatesHumanReadable(difficulties: number[]): HumanReadableDueDate[] {

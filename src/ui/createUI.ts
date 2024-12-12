@@ -45,12 +45,23 @@ export function createUI(cards: any, config: UIConfig): void {
             <div>${__internal__currentCard.front}</div>
             <div>${__internal__currentCard.back}</div>
         `;
-    
-        let reviewButtonRow = "";
-        reviewButtonRow += '<button onclick="updateCard(0)" style="flex: 1; background-color: red;">Again</button>';
-        reviewButtonRow += '<button onclick="updateCard(1)" style="flex: 1; background-color: yellow;">Hard</button>';
-        reviewButtonRow += '<button onclick="updateCard(2)" style="flex: 1; background-color: lime;">Good</button>';
-        reviewButtonRow += '<button onclick="updateCard(3)" style="flex: 1; background-color: blue;">Easy</button>';
+
+        const dueDates = __internal__currentCard.getPotentialDueDatesHumanReadable([0, 1, 2, 3]);
+
+        let reviewButtonRow = `
+            <button onclick="updateCard(0)" style="flex: 1; background-color: red;">
+                ${config?.againButtonText || "Again"}<br><small>${dueDates?.[0]?.prettyTime || ""}</small>
+            </button>
+            <button onclick="updateCard(1)" style="flex: 1; background-color: yellow;">
+                ${config?.hardButtonText || "Hard"}<br><small>${dueDates?.[1]?.prettyTime || ""}</small>
+            </button>
+            <button onclick="updateCard(2)" style="flex: 1; background-color: lime;">
+                ${config?.goodButtonText || "Good"}<br><small>${dueDates?.[2]?.prettyTime || ""}</small>
+            </button>
+            <button onclick="updateCard(3)" style="flex: 1; background-color: blue;">
+                ${config?.easyButtonText || "Easy"}<br><small>${dueDates?.[3]?.prettyTime || ""}</small>
+            </button>
+        `;
 
         reviewButtonRowDiv.innerHTML = reviewButtonRow;
     }

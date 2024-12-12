@@ -6,4 +6,3 @@ export { calculateStatistics } from './statistics/calculateStatistics.js';
 import Deck from './deck/Deck.js';
 export default Deck;
 
-
