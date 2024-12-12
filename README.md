@@ -19,7 +19,13 @@ $ npm install spacerepetition
 And import it
 
 ```javascript
-import { createFlashcards } from 'spacerepetition'
+import SpaceRepetition from 'spacerepetition'
+```
+
+It doesn't matter what your data looks like, it will always return an array of flashcards:
+
+```javascript
+const deck = new SpaceRepetition([{ question: "What types does Space Repetition accept", answer: "Any type of data" }])
 ```
 
 Or you can include it from a CDN:
@@ -32,7 +38,7 @@ And use it:
 
 ```html
 <script>
-    const flashcards = Spacerepetition.createFlashcards([1, 2, 3])
+    const deck = new Spacerepetition()
 </script>
 ```
 
@@ -40,36 +46,50 @@ And use it:
 
 ## Usage
 
-It doesn't matter what your data looks like, it will always return an array of flashcards:
+A deck contains multiple cards (in this case a single card):
 
 ```javascript
-const flashcards = createFlashcards([{ front: "Question", back: "Answer" }])
+const deck = new Deck(1);
 ```
 
-Here is what it returns:
+Here is what it contains:
 
 ```javascript
 /* 
-[
- {
-    front: 'Question',
-    back: 'Answer',
-    learningAlgorithm: 'default',
-    easeFactor: 2.7,
-    minEaseFactor: 1.3,
-    interval: 1,
-    repetition: 0,
-    dueDate: 1733666742133,
-    updateDifficulty: [Function: updateDifficulty],
-    again: [Function: again],
-    hard: [Function: hard],
-    good: [Function: good],
-    easy: [Function: easy]
-  }
-]
+Deck {
+  cards: [
+    Card {
+      interval: 1,
+      repetition: 0,
+      easeFactor: 2.7,
+      minEaseFactor: 1.3,
+      dueDate: 1734034389755,
+      value: 1,
+      learningAlgorithm: 'default'
+    }
+  ]
+}
 */
 
 ```
+
+You can get the next card to study by calling `getNextCard` which finds a random card that is due:
+
+```javascript
+const currentCard = deck.getNextCard();
+```
+
+On the card you can call the following convenience methods after you've studied it:
+
+```javascript
+currentCard.again() // 0
+currentCard.hard()  // 1
+currentCard.good()  // 2
+currentCard.easy()  // 3
+currentCard.updateDifficulty(3) // easy
+```
+
+The corresponding values are in comments next to the methods.
 
 ---
 
@@ -85,7 +105,7 @@ You can also specify your own algorithm:
 
 ```javascript
 function myAlgorithm(card, difficulty) {
-    return "use the card that you pass to update the internal state of the card"
+    return "use the card parameter to update the state of the card"
 }
 
 const flashcards = createFlashcards([], myAlgorithm)
@@ -104,7 +124,7 @@ const config = {
     interval: 7
 }
 
-const flashcards = createFlashcards([], undefined, config)
+const flashcards = new SpaceRepetition([], "default", config)
 ```
 
 Here is what the config object looks like:
@@ -122,16 +142,16 @@ Here is what the config object looks like:
 
 ## UI
 
-You can use the built-in UI for HTML. You can style the `front` and `back` property with text or any HTML:
+You can use the built-in UI for HTML. You can style the `front` and `back` property with **text** or any **HTML**:
 
 ```html
 <!DOCTYPE html>
-<html lang="en" style="height: 100%; margin: 0;">
+<html lang="en" >
 <head>
     <title>Space Repetition</title>
     <script src="https://cdn.jsdelivr.net/npm/spacerepetition/dist/spacerepetition.min.js"></script>
 </head>
-<body style="margin: 0; padding: 0; height: 100%; display: flex; flex-direction: column;">
+<body>
     
     <script>
         const cards = [
@@ -142,42 +162,15 @@ You can use the built-in UI for HTML. You can style the `front` and `back` prope
             { front: "Front 2", back: "Back 2" },
         ];
 
-        const myFlashcards = SpaceRepetition.createFlashcards(cards);
-
-        const { template, startFlashcardsUI } = SpaceRepetition.createUI(myFlashcards);
-
-        document.body.insertAdjacentHTML('afterbegin', template);
-
-        startFlashcardsUI(myFlashcards);
+        SpaceRepetition.createUI(cards);
     </script>
 </body>
 </html>
 ```
 
-It's a 3 step process:
-
-1. Genereate the flashcards. (This manual step allows you to provide existing flashcards or set their values).
-
-2. Generate the UI (styling, front, back, button row) and insert them in the document. Set the CSS values as seen above on the HTML and body tag.
-
-3. Call `startFlashcardsUI` with the flashcards you generated in step 1.
-
 The end result will look like this:
 
 <img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/ui_example.png" alt="space spaced repetition logo" width="600" >
-
-
-    ---
-
-    ## Statistics
-
-    <!-- todo  -->
-    You can get statistics about the flashcards:
-
-    ```javascript
-
-    ```
-
 
 
 [npm-version-image]: https://img.shields.io/npm/v/spacerepetition.svg

@@ -43,6 +43,7 @@ export function createUI(cards: any, config: UIConfig): void {
 
         cardBack.innerHTML = `
             <div>${__internal__currentCard.front}</div>
+            <div style="width: 100%; height: 0.5rem; background-color: black; margin: 1rem 0;"></div>
             <div>${__internal__currentCard.back}</div>
         `;
 
