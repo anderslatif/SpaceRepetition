@@ -37,7 +37,8 @@
             </div>
             <div id="spacerepetition-ui-internal-card-back"
                 style="
-                    display: flex; 
+                    display: flex;
+                    flex-direction: column;
                     justify-content: center; 
                     align-items: center;
                     text-align: center; 
@@ -89,7 +90,11 @@
 
         function showFront() {
             cardFront.innerHTML = __internal__flashcards[0].front;
-            cardBack.innerHTML = __internal__flashcards[0].back;
+            cardBack.innerHTML = `
+                <div>${__internal__flashcards[0].front}</div>
+                <div style="width: 100%; height: 0.5rem; background-color: black; margin: 1rem 0;"></div>
+                <div>${__internal__flashcards[0].back}</div>
+            `;
             reviewButtonRowDiv.innerHTML = "";
             flipped = false;
             cardContainer.style.transform = "rotateY(0deg)";
