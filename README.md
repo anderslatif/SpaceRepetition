@@ -25,13 +25,16 @@ import SpaceRepetition from 'spacerepetition'
 It doesn't matter what your data looks like, it will always return an array of flashcards:
 
 ```javascript
-const deck = new SpaceRepetition([{ question: "What types does Space Repetition accept", answer: "Any type of data" }])
+const deck = new SpaceRepetition([{ 
+        question: "What types does Space Repetition accept?", 
+        answer: "Any type of data" 
+    }])
 ```
 
 Or you can include it from a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/spacerepetition/dist/spacerepetition.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/spacerepetition@0.0/dist/spacerepetition.min.js"></script>
 ```
 
 And use it:
@@ -99,18 +102,25 @@ There's currently only support for [sm-2](https://en.wikipedia.org/wiki/SuperMem
 
 But you could also pass your own algorithm. Both parameters are optional:
 
-
-
-You can also specify your own algorithm:
-
 ```javascript
 function myAlgorithm(card, difficulty) {
     return "use the card parameter to update the state of the card"
 }
 
-const flashcards = createFlashcards([], myAlgorithm)
+const flashcards = SpaceRepetition([], myAlgorithm)
 ```
 
+---
+
+## Utility Functions
+
+If you don't want to work with the Deck and Card classes, the library also provides some utility functions:
+
+| Function Name      | Description                                |
+|--------------------|--------------------------------------------|
+| createFlashcards   | Creates flashcards (Card class).           |
+| getNextCard        | Retrieves the next card to review.         |
+| createUI           | Creates a HTML UI for flashcard reviews    |
 
 
 ---
@@ -146,20 +156,23 @@ You can use the built-in UI for HTML. You can style the `front` and `back` prope
 
 ```html
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
     <title>Space Repetition</title>
-    <script src="https://cdn.jsdelivr.net/npm/spacerepetition/dist/spacerepetition.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/spacerepetition@0.0/dist/spacerepetition.min.js"></script>
 </head>
 <body>
     
     <script>
         const cards = [
-            {   front: "<h1 style='color: red'>Front 1</h1>", 
-                back: `<div><p style='color: blue;'>Space Repetition</p>
-                        <img src='https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png'>
-                       </div>` },
-            { front: "Front 2", back: "Back 2" },
+            {   
+                front: "<h1 style='color: red'>Front 1</h1>", 
+                back: `<div>
+                            <p style='color: blue;'>Space Repetition</p>
+                            <img src='https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png'>
+                       </div>` 
+            },
+            {   front: "Front 2", back: "Back 2" }
         ];
 
         SpaceRepetition.createUI(cards);
@@ -170,7 +183,7 @@ You can use the built-in UI for HTML. You can style the `front` and `back` prope
 
 The end result will look like this:
 
-<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/ui_example.png" alt="space spaced repetition logo" width="600" >
+<img src="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/ui_example.png" alt="space spaced repetition logo" width="700" >
 
 
 [npm-version-image]: https://img.shields.io/npm/v/spacerepetition.svg

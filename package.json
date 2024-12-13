@@ -1,6 +1,6 @@
 {
     "name": "spacerepetition",
-    "version": "0.0.41",
+    "version": "0.0.42",
     "description": "Spaced Repetition Library",
     "readme": "README.md",
     "main": "dist/spacerepetition.cjs",
