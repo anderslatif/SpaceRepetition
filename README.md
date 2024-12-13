@@ -114,7 +114,7 @@ const flashcards = SpaceRepetition([], myAlgorithm)
 
 ## Utility Functions
 
-If you don't want to work with the Deck and Card classes, the library also provides some utility functions:
+If you don't want to work with the Deck class, the library also provides some utility functions:
 
 ```javascript
 import { createFlashcards, getNextCard, createUI } from 'spacerepetition'
@@ -122,7 +122,7 @@ import { createFlashcards, getNextCard, createUI } from 'spacerepetition'
 
 | Function Name      | Description                                |
 |--------------------|--------------------------------------------|
-| createFlashcards   | Creates flashcards (Card class).           |
+| createFlashcards   | Creates a single Card.                     |
 | getNextCard        | Retrieves the next card to review.         |
 | createUI           | Creates a HTML UI for flashcard reviews    |
 
