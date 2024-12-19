@@ -173,7 +173,7 @@ You can use the built-in UI for HTML. You can style the `front` and `back` prope
                 front: "<h1 style='color: red'>Front 1</h1>", 
                 back: `<div>
                             <p style='color: blue;'>Space Repetition</p>
-                            <img src='https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png'>
+                            <img src='https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/assets/spacerepetitionlogo.png'>
                        </div>` 
             },
             {   front: "Front 2", back: "Back 2" }
