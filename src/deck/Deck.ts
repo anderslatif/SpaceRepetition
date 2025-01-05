@@ -44,7 +44,8 @@ export default class Deck {
         let nextCard: Flashcard | undefined;
         do {
             nextCard = getNextCard(this.cards);
-        } while (nextCard === this.lastCard || nextCard === undefined);
+            if (!nextCard) break;
+        } while (nextCard === this.lastCard);
         this.lastCard = nextCard;
         return nextCard;      
     }

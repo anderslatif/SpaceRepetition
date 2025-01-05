@@ -217,9 +217,9 @@ var SpaceRepetition = (() => {
       let nextCard2;
       do {
         nextCard2 = getNextCard(this.cards);
-      } while (nextCard2 === this.lastCard || nextCard2 === void 0);
+        if (!nextCard2) break;
+      } while (nextCard2 === this.lastCard);
       this.lastCard = nextCard2;
-      console.log("NICE!");
       return nextCard2;
     }
     // just an alias for getNextCard
