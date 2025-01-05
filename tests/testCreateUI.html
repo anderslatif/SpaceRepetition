@@ -232,8 +232,8 @@ var SpaceRepetition = (() => {
   };
 
   // src/ui/createUI.ts
-  function createUI(cards, config) {
-    const __internal__flashcards = new Deck(cards, config);
+  function createUI(cards, learningAlgorithm = "default", config) {
+    const __internal__flashcards = new Deck(cards, learningAlgorithm, config);
     let __internal__currentCard;
     document.body.style.cssText += "margin: 0; padding: 0; height: 100%; display: flex; flex-direction: column;";
     document.documentElement.style.cssText += "height: 100%; margin: 0;";
@@ -419,7 +419,14 @@ const cards = [
     // { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
 ];
 
-SpaceRepetition.createUI(cards);
+const config = {
+	"easeFactor": 2.0,
+	"minEaseFactor": 1.2,
+	"interval": 0.5,
+	"repetition": 0
+};
+
+SpaceRepetition.createUI(cards, undefined, config);
 
     </script>
     </body>

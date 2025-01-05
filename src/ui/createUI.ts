@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { Flashcard, UIConfig } from "../types.js";
+import { Flashcard, UIConfig, LearningAlgorithm } from "../types.js";
 import Deck from "../deck/Deck.js";
 
 
-export function createUI(cards: any, config: UIConfig): void {
+export function createUI(cards: any, learningAlgorithm: LearningAlgorithm = "default", config: UIConfig): void {
     
-    const __internal__flashcards = new Deck(cards, config);
+    const __internal__flashcards = new Deck(cards, learningAlgorithm, config);
 
     let __internal__currentCard;
 

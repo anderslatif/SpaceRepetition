@@ -1,7 +1,6 @@
 import { Flashcard, HumanReadableDueDate } from "../types.js";
 
 import { learningAlgorithmSelector } from "../algorithms/algorithmSelector.js"
-import { defaultCardConfig } from "../util/defaultConfig.js";
 
 export default class Card implements Flashcard {
     interval: number;

@@ -34,7 +34,14 @@ const cards = [
     // { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
 ];
 
-SpaceRepetition.createUI(cards);
+const config = {
+	"easeFactor": 2.0,
+	"minEaseFactor": 1.2,
+	"interval": 0.5,
+	"repetition": 0
+};
+
+SpaceRepetition.createUI(cards, undefined, config);
 `;
 
 const bottomHTML = `
