@@ -7,6 +7,7 @@ import { getNextCard } from '../flashcards/flashcardScheduler.js';
 
 export default class Deck {
     private cards: Flashcard[];
+    private lastCard: Flashcard | undefined;
 
     constructor(cards?: any, learningAlgorithm: LearningAlgorithm = "default", config?: object) {
         const mergedConfig = { ...defaultCardConfig, ...(config || {}) };
@@ -40,7 +41,17 @@ export default class Deck {
     }
 
     getNextCard() {
-        return getNextCard(this.cards);
+        let nextCard: Flashcard | undefined;
+        do {
+            nextCard = getNextCard(this.cards);
+        } while (nextCard === this.lastCard || nextCard === undefined);
+        this.lastCard = nextCard;
+        return nextCard;      
+    }
+
+    // just an alias for getNextCard
+    nextCard() {
+        return this.getNextCard();
     }
 
     addDeck(deck: Deck) {

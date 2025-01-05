@@ -187,26 +187,53 @@ var SpaceRepetition = (() => {
     return dueCards[randomIndex];
   }
 
-  // src/ui/prepareFlashcards.ts
-  function prepareFlashcards(cards, config) {
-    if (!cards) return [];
-    if (Array.isArray(cards)) {
-      return cards.map((card) => {
-        card.front = card.front ? card.front : config?.frontMissingText || "Front Missing";
-        card.back = card.back ? card.back : config?.backMissingText || "Back Missing";
-        return createFlashcard(card, config);
-      });
-    } else {
-      const card = { ...cards };
-      card.front = config?.frontMissingText || "Front Missing. Define a key in the object titled `front`";
-      card.back = config?.backMissingText || "Back Missing. Define a key in the object titled `back`";
-      return [createFlashcard(card, config)];
+  // src/deck/Deck.ts
+  var Deck = class {
+    constructor(cards, learningAlgorithm = "default", config) {
+      const mergedConfig = { ...defaultCardConfig, ...config || {} };
+      this.cards = this.createFlashcards(cards, learningAlgorithm, mergedConfig);
     }
-  }
+    createFlashcards(cards, learningAlgorithm, config) {
+      return createFlashcards(cards, learningAlgorithm, config);
+    }
+    createFlashcard(card, config) {
+      return createFlashcard(card, config);
+    }
+    addCard(card) {
+      this.cards.push(card);
+    }
+    removeCard(card) {
+      const index = this.cards.indexOf(card);
+      if (index > -1) {
+        this.cards.splice(index, 1);
+        return true;
+      }
+      return false;
+    }
+    getAllCards() {
+      return this.cards;
+    }
+    getNextCard() {
+      let nextCard2;
+      do {
+        nextCard2 = getNextCard(this.cards);
+      } while (nextCard2 === this.lastCard || nextCard2 === void 0);
+      this.lastCard = nextCard2;
+      console.log("NICE!");
+      return nextCard2;
+    }
+    // just an alias for getNextCard
+    nextCard() {
+      return this.getNextCard();
+    }
+    addDeck(deck) {
+      this.cards = this.cards.concat(deck.getAllCards());
+    }
+  };
 
   // src/ui/createUI.ts
   function createUI(cards, config) {
-    const __internal__flashcards = prepareFlashcards(cards, config);
+    const __internal__flashcards = new Deck(cards, config);
     let __internal__currentCard;
     document.body.style.cssText += "margin: 0; padding: 0; height: 100%; display: flex; flex-direction: column;";
     document.documentElement.style.cssText += "height: 100%; margin: 0;";
@@ -259,7 +286,7 @@ var SpaceRepetition = (() => {
     window.nextCard = () => {
       cardContainer.style.top = "-100%";
       setTimeout(() => {
-        __internal__currentCard = SpaceRepetition.getNextCard(__internal__flashcards);
+        __internal__currentCard = __internal__flashcards.getNextCard(__internal__flashcards);
         if (__internal__currentCard) {
           showFront();
         } else {
@@ -272,8 +299,8 @@ var SpaceRepetition = (() => {
                             <h3>Or you could download the deck as a JSON file.</h3>
                             <p style="color: #333; font-size: 16px; line-height: 1.8; background-color: #fefae0; padding: 16px; border-radius: 6px; border: 1px solid #ddd; max-width: 700px; margin: 20px auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
                                 You can take these values and create a <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">const deck = /* file content here */</code> variable that can be passed like this: 
-                                <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">new SpaceRepetition(deck)</code>; or 
-                                <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">SpaceRepetition.ui(deck)</code>
+                                <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">new SpaceRepetition(deck);</code> or 
+                                <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">SpaceRepetition.ui(deck);</code>
                             </p>
                         </div>
                     `;
@@ -378,40 +405,6 @@ var SpaceRepetition = (() => {
     return {};
   }
 
-  // src/deck/Deck.ts
-  var Deck = class {
-    constructor(cards, learningAlgorithm = "default", config) {
-      const mergedConfig = { ...defaultCardConfig, ...config || {} };
-      this.cards = this.createFlashcards(cards, learningAlgorithm, mergedConfig);
-    }
-    createFlashcards(cards, learningAlgorithm, config) {
-      return createFlashcards(cards, learningAlgorithm, config);
-    }
-    createFlashcard(card, config) {
-      return createFlashcard(card, config);
-    }
-    addCard(card) {
-      this.cards.push(card);
-    }
-    removeCard(card) {
-      const index = this.cards.indexOf(card);
-      if (index > -1) {
-        this.cards.splice(index, 1);
-        return true;
-      }
-      return false;
-    }
-    getAllCards() {
-      return this.cards;
-    }
-    getNextCard() {
-      return getNextCard(this.cards);
-    }
-    addDeck(deck) {
-      this.cards = this.cards.concat(deck.getAllCards());
-    }
-  };
-
   // src/index.ts
   var src_default = Deck;
   return __toCommonJS(src_exports);
@@ -422,7 +415,7 @@ var SpaceRepetition = (() => {
     
 const cards = [
     { front: "<h1 style='color: red'>Front 1</h1>", back: "<p style='color: blue'>Back 1</p>" },
-    // { front: "<h1 style='color: red'>Front 2</h1>", back: "<p style='color: blue'>Back 2</p>" },
+    { front: "<h1 style='color: red'>Front 2</h1>", back: "<p style='color: blue'>Back 2</p>" },
     // { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
 ];
 

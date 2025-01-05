@@ -1,12 +1,11 @@
 // @ts-nocheck
 import { Flashcard, UIConfig } from "../types.js";
-
-import { prepareFlashcards } from "./prepareFlashcards.js";
+import Deck from "../deck/Deck.js";
 
 
 export function createUI(cards: any, config: UIConfig): void {
     
-    const __internal__flashcards = prepareFlashcards(cards, config);
+    const __internal__flashcards = new Deck(cards, config);
 
     let __internal__currentCard;
 
@@ -75,7 +74,7 @@ export function createUI(cards: any, config: UIConfig): void {
     window.nextCard = () => {
         cardContainer.style.top = "-100%";
         setTimeout(() => {
-            __internal__currentCard = SpaceRepetition.getNextCard(__internal__flashcards);
+            __internal__currentCard = __internal__flashcards.getNextCard(__internal__flashcards);
             if (__internal__currentCard) {
                 showFront();
             } else {

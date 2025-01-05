@@ -2,7 +2,6 @@ import { Flashcard, UIConfig } from "../types.js";
 
 import { createFlashcard } from "../flashcards/createFlashcards.js";
 
-
 export function prepareFlashcards(cards: any, config: UIConfig): Flashcard[] {
 
     if (!cards) return [];
