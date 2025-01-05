@@ -24,7 +24,8 @@
       "bundle-cjs": "esbuild src/index.ts --bundle --platform=node --format=cjs --outfile=dist/spacerepetition.cjs",
       "bundle-iife": "esbuild src/index.ts --bundle --format=iife --global-name=SpaceRepetition --define:module=undefined --outfile=dist/spacerepetition.min.js",
       "build": "npm run generate-types && npm run bundle-esm && npm run bundle-cjs && npm run bundle-iife && npm run copy-cjs-wrapper",
-      "evaluate": "npm run build && node tests/evaluateLearningAlgorithm.js"
+      "evaluate": "npm run build && node tests/evaluateLearningAlgorithm.js",
+      "test-ui": "npm run bundle-iife  && node ./tests/testCreateUIHTMLFile.js && open ./tests/testCreateUI.html"
     },
     "repository": {
         "type": "git",

@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="https://raw.githubusercontent.com/anderslatif/SpaceRepetition/main/spacerepetitionlogo.png" type="image/png">
+    <title>Space Repetition</title>
+    <script src="https://cdn.jsdelivr.net/npm/spacerepetition/dist/spacerepetition.min.js"></script>
+</head>
+<body>
+    
+    <script>
+"use strict";
+var SpaceRepetition = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // src/index.ts
+  var src_exports = {};
+  __export(src_exports, {
+    calculateStatistics: () => calculateStatistics,
+    createFlashcards: () => createFlashcards,
+    createUI: () => createUI,
+    default: () => src_default,
+    getNextCard: () => getNextCard
+  });
+
+  // src/util/defaultConfig.ts
+  var defaultCardConfig = {
+    easeFactor: 2.7,
+    minEaseFactor: 1.3,
+    interval: 1,
+    repetition: 0
+  };
+
+  // src/algorithms/sm-2.ts
+  function updateCardSM2(card, difficulty) {
+    if (difficulty < 2) {
+      card.repetition = 0;
+      card.interval = Math.max(2, card.interval * (0.5 + difficulty * 0.1));
+      ;
+      card.dueDate = Date.now() + difficulty * 1e3 * 60 * 2;
+    } else {
+      card.repetition += 1;
+      if (card.repetition === 1) card.interval = 1 + (difficulty - 2) * 0.5;
+      else if (card.repetition === 2) card.interval = 6;
+      else {
+        const intervalFactor = difficulty === 2 ? 1 : 1.6;
+        card.interval = Math.round(card.interval * card.easeFactor * intervalFactor);
+      }
+      card.easeFactor = Math.max(
+        card.minEaseFactor,
+        card.easeFactor + (0.15 - (3 - difficulty) * (0.1 + (3 - difficulty) * 0.05))
+      );
+      card.dueDate = Date.now() + card.interval * 24 * 60 * 60 * 1e3;
+    }
+  }
+
+  // src/algorithms/algorithmSelector.ts
+  function learningAlgorithmSelector(card, difficulty, learningAlgorithm) {
+    if (typeof learningAlgorithm === "function") {
+      learningAlgorithm(card, difficulty);
+    } else {
+      updateCardSM2(card, difficulty);
+    }
+  }
+
+  // src/deck/Card.ts
+  var Card = class _Card {
+    // Allow dynamic properties
+    constructor(card, config) {
+      const mergedCard = {
+        ...config,
+        ...card
+      };
+      this.interval = mergedCard.interval ?? 0;
+      this.repetition = mergedCard.repetition ?? 0;
+      this.easeFactor = mergedCard.easeFactor ?? 2.5;
+      this.minEaseFactor = mergedCard.minEaseFactor ?? 1.3;
+      this.dueDate = mergedCard.dueDate ?? Date.now();
+      Object.keys(mergedCard).forEach((key) => {
+        if (!this.hasOwnProperty(key)) {
+          this[key] = mergedCard[key];
+        }
+      });
+    }
+    updateDifficulty(difficulty) {
+      learningAlgorithmSelector(this, difficulty, this.learningAlgorithm);
+    }
+    again() {
+      this.updateDifficulty(0);
+    }
+    hard() {
+      this.updateDifficulty(1);
+    }
+    good() {
+      this.updateDifficulty(2);
+    }
+    easy() {
+      this.updateDifficulty(3);
+    }
+    getPotentialDueDate(difficulty) {
+      const potentialCard = new _Card(this, {
+        interval: this.interval,
+        repetition: this.repetition,
+        easeFactor: this.easeFactor,
+        minEaseFactor: this.minEaseFactor,
+        dueDate: this.dueDate
+      });
+      learningAlgorithmSelector(potentialCard, difficulty, this.learningAlgorithm);
+      return potentialCard.dueDate;
+    }
+    getPotentialDueDates(difficulties) {
+      return difficulties.map((difficulty) => this.getPotentialDueDate(difficulty));
+    }
+    getPotentialDueDatesHumanReadable(difficulties) {
+      const now = Date.now();
+      const dueDates = this.getPotentialDueDates(difficulties);
+      return dueDates.map((dueDate) => {
+        const diff = dueDate - now;
+        const days = Math.floor(diff / (1e3 * 60 * 60 * 24));
+        const hours = Math.floor(diff / (1e3 * 60 * 60) % 24);
+        const minutes = Math.floor(diff / (1e3 * 60) % 60);
+        const seconds = Math.floor(diff / 1e3 % 60);
+        const timeString = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        let prettyTime = "";
+        if (days) prettyTime += `${days} days`;
+        if (hours) prettyTime += ` ${hours} hours`;
+        if (minutes) prettyTime += ` ${minutes} minutes`;
+        if (seconds) prettyTime += ` ${seconds} seconds`;
+        return {
+          seconds,
+          minutes,
+          hours,
+          days,
+          timeString,
+          prettyTime: prettyTime.trim() || "0 seconds"
+        };
+      });
+    }
+  };
+
+  // src/flashcards/createFlashcards.ts
+  function createFlashcards(cards, learningAlgorithm = "default", config) {
+    const mergedConfig = { ...defaultCardConfig, ...config };
+    if (!cards) {
+      return [];
+    }
+    if (Array.isArray(cards)) {
+      return cards.map((card) => {
+        if (typeof card === "object" && card !== null) {
+          return createFlashcard({ ...card, learningAlgorithm }, mergedConfig);
+        } else {
+          return createFlashcard({ value: card, learningAlgorithm }, mergedConfig);
+        }
+      });
+    } else if (typeof cards === "object" && cards !== null) {
+      return [createFlashcard({ ...cards, learningAlgorithm }, mergedConfig)];
+    } else {
+      return [createFlashcard({ value: cards, learningAlgorithm }, mergedConfig)];
+    }
+  }
+  function createFlashcard(card, config) {
+    return new Card(card, config);
+  }
+
+  // src/flashcards/flashcardScheduler.ts
+  function getNextCard(flashcards) {
+    const now = Date.now();
+    let dueCards = flashcards.filter((card) => card.dueDate <= now);
+    if (dueCards.length === 0) return void 0;
+    const randomIndex = Math.floor(Math.random() * dueCards.length);
+    return dueCards[randomIndex];
+  }
+
+  // src/ui/prepareFlashcards.ts
+  function prepareFlashcards(cards, config) {
+    if (!cards) return [];
+    if (Array.isArray(cards)) {
+      return cards.map((card) => {
+        card.front = card.front ? card.front : config?.frontMissingText || "Front Missing";
+        card.back = card.back ? card.back : config?.backMissingText || "Back Missing";
+        return createFlashcard(card, config);
+      });
+    } else {
+      const card = { ...cards };
+      card.front = config?.frontMissingText || "Front Missing. Define a key in the object titled `front`";
+      card.back = config?.backMissingText || "Back Missing. Define a key in the object titled `back`";
+      return [createFlashcard(card, config)];
+    }
+  }
+
+  // src/ui/createUI.ts
+  function createUI(cards, config) {
+    const __internal__flashcards = prepareFlashcards(cards, config);
+    let __internal__currentCard;
+    document.body.style.cssText += "margin: 0; padding: 0; height: 100%; display: flex; flex-direction: column;";
+    document.documentElement.style.cssText += "height: 100%; margin: 0;";
+    document.body.insertAdjacentHTML("afterbegin", cardReviewTemplate);
+    const cardContainer = document.getElementById("spacerepetition-ui-internal-card-container");
+    const cardFront = document.getElementById("spacerepetition-ui-internal-card-front");
+    const cardBack = document.getElementById("spacerepetition-ui-internal-card-back");
+    const reviewButtonRowDiv = document.getElementById("spacerepetition-ui-internal-review-row");
+    if (!cardContainer || !cardFront || !cardBack || !reviewButtonRowDiv) {
+      throw new Error("Missing elements. Please insert the template provided by createUI in the DOM.");
+    }
+    let flipped = false;
+    window.showFront = () => {
+      if (!__internal__currentCard) return;
+      cardFront.innerHTML = __internal__currentCard.front;
+      reviewButtonRowDiv.innerHTML = "";
+      flipped = false;
+      cardContainer.style.transform = "rotateY(0deg)";
+    };
+    function showBack() {
+      if (!__internal__currentCard) return;
+      flipped = true;
+      cardContainer.style.transform = "rotateY(180deg)";
+      cardBack.innerHTML = `
+            <div>${__internal__currentCard.front}</div>
+            <div style="width: 100%; height: 0.5rem; background-color: black; margin: 1rem 0;"></div>
+            <div>${__internal__currentCard.back}</div>
+        `;
+      const dueDates = __internal__currentCard.getPotentialDueDatesHumanReadable([0, 1, 2, 3]);
+      let reviewButtonRow = `
+            <button onclick="updateCard(0)" style="flex: 1; background-color: red;">
+                ${config?.againButtonText || "Again"}<br><small>${dueDates?.[0]?.prettyTime || ""}</small>
+            </button>
+            <button onclick="updateCard(1)" style="flex: 1; background-color: yellow;">
+                ${config?.hardButtonText || "Hard"}<br><small>${dueDates?.[1]?.prettyTime || ""}</small>
+            </button>
+            <button onclick="updateCard(2)" style="flex: 1; background-color: lime;">
+                ${config?.goodButtonText || "Good"}<br><small>${dueDates?.[2]?.prettyTime || ""}</small>
+            </button>
+            <button onclick="updateCard(3)" style="flex: 1; background-color: blue;">
+                ${config?.easyButtonText || "Easy"}<br><small>${dueDates?.[3]?.prettyTime || ""}</small>
+            </button>
+        `;
+      reviewButtonRowDiv.innerHTML = reviewButtonRow;
+    }
+    window.updateCard = (difficulty) => {
+      __internal__currentCard.updateDifficulty(difficulty);
+      nextCard();
+    };
+    window.nextCard = () => {
+      cardContainer.style.top = "-100%";
+      setTimeout(() => {
+        __internal__currentCard = SpaceRepetition.getNextCard(__internal__flashcards);
+        if (__internal__currentCard) {
+          showFront();
+        } else {
+          const noMoreCardsText = config?.noMoreCardsText || "No more cards!";
+          cardBack.innerHTML = `
+                        <div onclick='nextCard()'>
+                            <h1>${noMoreCardsText}</>
+                            <h2>Click again to check if any cards have become due.</h2>
+
+                            <h3>Or you could download the deck as a JSON file.</h3>
+                            <p style="color: #333; font-size: 16px; line-height: 1.8; background-color: #fefae0; padding: 16px; border-radius: 6px; border: 1px solid #ddd; max-width: 700px; margin: 20px auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+                                You can take these values and create a <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">const deck = /* file content here */</code> variable that can be passed like this: 
+                                <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">new SpaceRepetition(deck)</code>; or 
+                                <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">SpaceRepetition.ui(deck)</code>
+                            </p>
+                        </div>
+                    `;
+          reviewButtonRowDiv.innerHTML = `
+                     <button 
+                        style="font-size: 16px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer;"
+                        onclick="downloadDeckToJSON()"
+                    >
+                        Download the cards
+                    </button>
+                `;
+        }
+        cardContainer.style.top = "0";
+      }, 600);
+    };
+    window.flipCard = () => {
+      if (!cardContainer.style.top || cardContainer.style.top === "0px") {
+        if (flipped) {
+          showFront();
+        } else {
+          showBack();
+        }
+      }
+    };
+    cardContainer.addEventListener("click", flipCard);
+    setTimeout(() => nextCard(), 200);
+    window.downloadDeckToJSON = () => {
+      const dataString = JSON.stringify(__internal__flashcards, null, 2);
+      const blob = new Blob([dataString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "deck.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+  }
+  var cardReviewTemplate = `
+    <div style="flex-grow: 1; display: flex; justify-content: center; align-items: center; overflow: hidden; padding: 0; margin: 0;">
+        <div id="spacerepetition-ui-internal-card-container"
+            style="     
+                width: 100%; 
+                height: 100%; 
+                position: relative;
+                transform-style: preserve-3d; 
+                transition: transform 0.6s, top 0.6s;
+                top: 0;">
+            <div id="spacerepetition-ui-internal-card-front"
+                style="
+                    display: flex; 
+                    justify-content: center; 
+                    align-items: center; 
+                    text-align: center;
+                    width: 100%; 
+                    height: 100%; 
+                    position: absolute; 
+                    backface-visibility: hidden; 
+                    padding: 2rem;
+                    border-radius: 16px; 
+                    border: 1px solid rgba(0, 0, 0, 0.1); 
+                    box-shadow: 0 12px 30px rgba(0, 0, 0, 1); 
+                    font-size: calc(1rem + 2vw); 
+                    background-color: white;">
+            </div>
+            <div id="spacerepetition-ui-internal-card-back"
+                style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center; 
+                    align-items: center;
+                    text-align: center; 
+                    width: 100%; 
+                    height: 100%; 
+                    position: absolute; 
+                    backface-visibility: hidden; 
+                    transform: rotateY(180deg); 
+                    padding: 2rem;
+                    border-radius: 16px; 
+                    border: 1px solid rgba(0, 0, 0, 0.1); 
+                    box-shadow: 0 12px 30px rgba(0, 0, 0, 1); 
+                    font-size: calc(1rem + 2vw); 
+                    background-color: white;">
+            </div>
+        </div>
+    </div>
+
+    <div id="spacerepetition-ui-internal-review-row" 
+        style="
+            width: 100%; 
+            display: flex; 
+            min-height: 5vh; 
+            position: fixed; 
+            bottom: 0; 
+            background-color: white; 
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); 
+            padding-bottom: 0.1rem;">
+    </div>
+`;
+
+  // src/statistics/calculateStatistics.ts
+  function calculateStatistics(flashcards) {
+    return {};
+  }
+
+  // src/deck/Deck.ts
+  var Deck = class {
+    constructor(cards, learningAlgorithm = "default", config) {
+      const mergedConfig = { ...defaultCardConfig, ...config || {} };
+      this.cards = this.createFlashcards(cards, learningAlgorithm, mergedConfig);
+    }
+    createFlashcards(cards, learningAlgorithm, config) {
+      return createFlashcards(cards, learningAlgorithm, config);
+    }
+    createFlashcard(card, config) {
+      return createFlashcard(card, config);
+    }
+    addCard(card) {
+      this.cards.push(card);
+    }
+    removeCard(card) {
+      const index = this.cards.indexOf(card);
+      if (index > -1) {
+        this.cards.splice(index, 1);
+        return true;
+      }
+      return false;
+    }
+    getAllCards() {
+      return this.cards;
+    }
+    getNextCard() {
+      return getNextCard(this.cards);
+    }
+    addDeck(deck) {
+      this.cards = this.cards.concat(deck.getAllCards());
+    }
+  };
+
+  // src/index.ts
+  var src_default = Deck;
+  return __toCommonJS(src_exports);
+})();
+
+    </script>
+    <script>
+    
+const cards = [
+    { front: "<h1 style='color: red'>Front 1</h1>", back: "<p style='color: blue'>Back 1</p>" },
+    // { front: "<h1 style='color: red'>Front 2</h1>", back: "<p style='color: blue'>Back 2</p>" },
+    // { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
+];
+
+SpaceRepetition.createUI(cards);
+
+    </script>
+    </body>
+</html>

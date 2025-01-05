@@ -80,9 +80,28 @@ export function createUI(cards: any, config: UIConfig): void {
                 showFront();
             } else {
                 const noMoreCardsText = config?.noMoreCardsText || "No more cards!";
-                cardBack.innerHTML = `<h1>${noMoreCardsText}</>`;
-                cardContainer.removeEventListener("click", flipCard);
-                reviewButtonRowDiv.innerHTML = "";
+                cardBack.innerHTML = `
+                        <div onclick='nextCard()'>
+                            <h1>${noMoreCardsText}</>
+                            <h2>Click again to check if any cards have become due.</h2>
+
+                            <h3>Or you could download the deck as a JSON file.</h3>
+                            <p style="color: #333; font-size: 16px; line-height: 1.8; background-color: #fefae0; padding: 16px; border-radius: 6px; border: 1px solid #ddd; max-width: 700px; margin: 20px auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+                                You can take these values and create a <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">const deck = /* file content here */</code> variable that can be passed like this: 
+                                <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">new SpaceRepetition(deck);</code> or 
+                                <code style="background-color: #f4f4f4; padding: 2px 4px; border-radius: 3px; font-family: monospace;">SpaceRepetition.ui(deck);</code>
+                            </p>
+                        </div>
+                    `;
+                
+                reviewButtonRowDiv.innerHTML = `
+                     <button 
+                        style="font-size: 16px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer;"
+                        onclick="downloadDeckToJSON()"
+                    >
+                        Download the cards
+                    </button>
+                `;
             }
             cardContainer.style.top = "0";
         }, 600);
@@ -101,7 +120,20 @@ export function createUI(cards: any, config: UIConfig): void {
     // Attach click event
     cardContainer.addEventListener("click", flipCard);
 
-    setTimeout(() => nextCard(), 1000);
+    setTimeout(() => nextCard(), 200);
+
+    window.downloadDeckToJSON = () => {
+        const dataString = JSON.stringify(__internal__flashcards, null, 2);
+        const blob = new Blob([dataString], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'deck.json';
+        a.click();
+
+        URL.revokeObjectURL(url); // Clean up the URL object
+    }
 }
 
 const cardReviewTemplate = `
