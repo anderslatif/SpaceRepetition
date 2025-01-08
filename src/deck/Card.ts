@@ -12,6 +12,11 @@ export default class Card implements Flashcard {
 
     [key: string]: any; // Allow dynamic properties
 
+    /**
+     * Creates an instance of Card.
+     * @param {Flashcard} card - The flashcard data.
+     * @param {object} config - Configuration object for the card.
+     */
     constructor(card: Flashcard, config: object) {
         const mergedCard = {
             ...config,
@@ -32,26 +37,41 @@ export default class Card implements Flashcard {
             }
         });
     }
-  
-  
+
+    /**
+     * Updates the difficulty of the card.
+     * @param {number} difficulty - The difficulty rating.
+     */
     updateDifficulty(difficulty: number): void {
-      learningAlgorithmSelector(this, difficulty, this.learningAlgorithm);
+        learningAlgorithmSelector(this, difficulty, this.learningAlgorithm);
     }
-  
+
+    /**
+     * Marks the card as "again".
+     */
     again(): void {
-      this.updateDifficulty(0);
+        this.updateDifficulty(0);
     }
-  
+
+    /**
+     * Marks the card as "hard".
+     */
     hard(): void {
-      this.updateDifficulty(1);
+        this.updateDifficulty(1);
     }
-  
+
+    /**
+     * Marks the card as "good".
+     */
     good(): void {
-      this.updateDifficulty(2);
+        this.updateDifficulty(2);
     }
-  
+
+    /**
+     * Marks the card as "easy".
+     */
     easy(): void {
-      this.updateDifficulty(3);
+        this.updateDifficulty(3);
     }
 
     getPotentialDueDate(difficulty: number): number {
@@ -101,4 +121,4 @@ export default class Card implements Flashcard {
         });
     }
 
-  }
+}

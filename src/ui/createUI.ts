@@ -2,7 +2,12 @@
 import { Flashcard, UIConfig, LearningAlgorithm } from "../types.js";
 import Deck from "../deck/Deck.js";
 
-
+/**
+ * Creates the user interface for reviewing flashcards.
+ * @param {any} cards - The flashcards data.
+ * @param {LearningAlgorithm} [learningAlgorithm="default"] - The learning algorithm to use.
+ * @param {UIConfig} config - Configuration object for the UI.
+ */
 export function createUI(cards: any, learningAlgorithm: LearningAlgorithm = "default", config: UIConfig): void {
     
     const __internal__flashcards = new Deck(cards, learningAlgorithm, config);
@@ -24,6 +29,9 @@ export function createUI(cards: any, learningAlgorithm: LearningAlgorithm = "def
 
     let flipped = false;
 
+    /**
+     * Shows the front of the current card.
+     */
     window.showFront = () => {
         if (!__internal__currentCard) return;
 
@@ -34,7 +42,10 @@ export function createUI(cards: any, learningAlgorithm: LearningAlgorithm = "def
         cardContainer.style.transform = "rotateY(0deg)";
     }
     
-    function showBack() {
+    /**
+     * Shows the back of the current card.
+     */
+    window.showBack = () => {
         if (!__internal__currentCard) return;
 
         flipped = true;
@@ -66,11 +77,22 @@ export function createUI(cards: any, learningAlgorithm: LearningAlgorithm = "def
         reviewButtonRowDiv.innerHTML = reviewButtonRow;
     }
 
-    window.updateCard = (difficulty) => {
-        __internal__currentCard.updateDifficulty(difficulty);
-        nextCard();
+    /**
+     * Flips the current card.
+     */
+    window.flipCard = () => {
+        if (!cardContainer.style.top || cardContainer.style.top === "0px") {
+            if (flipped) {
+                showFront();
+            } else {
+                showBack();
+            }
+        }
     }
 
+    /**
+     * Advances to the next card.
+     */
     window.nextCard = () => {
         cardContainer.style.top = "-100%";
         setTimeout(() => {
@@ -106,14 +128,37 @@ export function createUI(cards: any, learningAlgorithm: LearningAlgorithm = "def
         }, 600);
     }
 
-    window.flipCard = () => {
-        if (!cardContainer.style.top || cardContainer.style.top === "0px") {
-            if (flipped) {
-                showFront();
-            } else {
-                showBack();
-            }
-        }
+    /**
+     * Marks the current card as "again".
+     */
+    window.again = () => {
+        updateCard(0);
+    }
+
+    /**
+     * Marks the current card as "hard".
+     */
+    window.hard = () => {
+        updateCard(1);
+    }
+
+    /**
+     * Marks the current card as "good".
+     */
+    window.good = () => {
+        updateCard(2);
+    }
+
+    /**
+     * Marks the current card as "easy".
+     */
+    window.easy = () => {
+        updateCard(3);
+    }
+
+    window.updateCard = (difficulty) => {
+        __internal__currentCard.updateDifficulty(difficulty);
+        nextCard();
     }
 
     // Attach click event
