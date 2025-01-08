@@ -21,7 +21,7 @@ export interface Flashcard {
     getPotentialDueDatesHumanReadable(difficulties: number[]): HumanReadableDueDate[];
 };
 
-export type LearningAlgorithm = "sm-2" | "default" | "" | ((card?: Flashcard, difficulty?: any) => void);
+export type LearningAlgorithm = "sm-2" | "default" | "fenestral-lacuna" | "" | ((card?: Flashcard, difficulty?: any) => void);
 
 export interface HumanReadableDueDate {
     seconds: number;

@@ -42,10 +42,18 @@ export default class Deck {
 
     getNextCard() {
         let nextCard: Flashcard | undefined;
+    
+        let attempts = 0; 
+        const maxAttempts = this.cards.length;
+    
         do {
             nextCard = getNextCard(this.cards);
-            if (!nextCard) break;
+    
+            if (!nextCard || attempts >= maxAttempts) break; // Break if nextCard is undefined or max attempts reached
+    
+            attempts++;
         } while (nextCard === this.lastCard);
+    
         this.lastCard = nextCard;
         return nextCard;      
     }

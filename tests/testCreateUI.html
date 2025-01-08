@@ -70,10 +70,29 @@ var SpaceRepetition = (() => {
     }
   }
 
+  // src/algorithms/fenestralLacuna.ts
+  function fenestralLacuna(card, difficulty) {
+    if (difficulty < 0 || difficulty > 3) {
+      throw new Error("Invalid difficulty level. Must be between 0 and 3.");
+    }
+    if (!card.dueDate || card.dueDate <= Date.now()) {
+      card.dueDate = Date.now();
+      if (!card.interval) card.interval = 0;
+    }
+    if (difficulty === 0) {
+      card.interval = 0;
+    } else {
+      card.interval += difficulty;
+    }
+    card.dueDate += card.interval * 1e3 * 60;
+  }
+
   // src/algorithms/algorithmSelector.ts
   function learningAlgorithmSelector(card, difficulty, learningAlgorithm) {
     if (typeof learningAlgorithm === "function") {
       learningAlgorithm(card, difficulty);
+    } else if (learningAlgorithm === "fenestral-lacuna") {
+      fenestralLacuna(card, difficulty);
     } else {
       updateCardSM2(card, difficulty);
     }
@@ -215,9 +234,12 @@ var SpaceRepetition = (() => {
     }
     getNextCard() {
       let nextCard2;
+      let attempts = 0;
+      const maxAttempts = this.cards.length;
       do {
         nextCard2 = getNextCard(this.cards);
-        if (!nextCard2) break;
+        if (!nextCard2 || attempts >= maxAttempts) break;
+        attempts++;
       } while (nextCard2 === this.lastCard);
       this.lastCard = nextCard2;
       return nextCard2;
@@ -416,17 +438,11 @@ var SpaceRepetition = (() => {
 const cards = [
     { front: "<h1 style='color: red'>Front 1</h1>", back: "<p style='color: blue'>Back 1</p>" },
     { front: "<h1 style='color: red'>Front 2</h1>", back: "<p style='color: blue'>Back 2</p>" },
-    // { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
+    { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
+    { front: "<h1 style='color: red'>Front 4</h1>", back: "<p style='color: blue'>Back 4</p>" },
 ];
 
-const config = {
-	"easeFactor": 2.0,
-	"minEaseFactor": 1.2,
-	"interval": 0.5,
-	"repetition": 0
-};
-
-SpaceRepetition.createUI(cards, undefined, config);
+SpaceRepetition.createUI(cards, 'fenestral-lacuna');
 
     </script>
     </body>

@@ -1,17 +1,17 @@
 {
     "compilerOptions": {
-      "outDir": "./dist",
+      "outDir": "src/flashcards/dist",
       "target": "ES2021",
       "module": "ESNext",
       "moduleResolution": "Node",
       "strict": true,
       "esModuleInterop": true,
       "declaration": true,
-      "declarationDir": "./dist/types",
+      "declarationDir": "src/flashcards/dist/types",
       "sourceMap": true,
       "skipLibCheck": true
     },
     "include": ["src/**/*"],
-    "exclude": ["dist", "node_modules"]
+    "exclude": ["src/flashcards/dist", "node_modules"]
   }
   

@@ -31,17 +31,11 @@ const scriptTagContent = `
 const cards = [
     { front: "<h1 style='color: red'>Front 1</h1>", back: "<p style='color: blue'>Back 1</p>" },
     { front: "<h1 style='color: red'>Front 2</h1>", back: "<p style='color: blue'>Back 2</p>" },
-    // { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
+    { front: "<h1 style='color: red'>Front 3</h1>", back: "<p style='color: blue'>Back 3</p>" },
+    { front: "<h1 style='color: red'>Front 4</h1>", back: "<p style='color: blue'>Back 4</p>" },
 ];
 
-const config = {
-	"easeFactor": 2.0,
-	"minEaseFactor": 1.2,
-	"interval": 0.5,
-	"repetition": 0
-};
-
-SpaceRepetition.createUI(cards, undefined, config);
+SpaceRepetition.createUI(cards, 'fenestral-lacuna');
 `;
 
 const bottomHTML = `

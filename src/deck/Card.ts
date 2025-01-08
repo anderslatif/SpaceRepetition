@@ -1,4 +1,4 @@
-import { Flashcard, HumanReadableDueDate } from "../types.js";
+import { Flashcard, LearningAlgorithm, HumanReadableDueDate } from "../types.js";
 
 import { learningAlgorithmSelector } from "../algorithms/algorithmSelector.js"
 
