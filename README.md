@@ -98,16 +98,30 @@ The corresponding values are in comments next to the methods.
 
 ## Spaced Repetition Algorithms
 
-There's currently only support for [sm-2](https://en.wikipedia.org/wiki/SuperMemo).
+There is support for [SM-2](https://en.wikipedia.org/wiki/SuperMemo) and a custom-made algorithm called `fenestral-lacuna`..
 
-But you could also pass your own algorithm. Both parameters are optional:
+
+```javascript
+new SpaceRepetition([], 'sm-2');
+new SpaceRepetition([], 'fenestral-lacuna');
+```
+
+Here is an overview:
+
+| Algorithm          | Acceptable Values       | Purpose                                    | Explanation                                                                                  |
+|--------------------|-------------------------|--------------------------------------------|----------------------------------------------------------------------------------------------|
+| **SM-2**           | `sm-2`, `default` and more  | The default algorithm                     | Implements the [SM-2 algorithm](https://en.wikipedia.org/wiki/SuperMemo#Description_of_SM-2_algorithm), designed for long-term spaced repetition. |
+| **Fenestral-Lacuna** | `fenestral-lacuna`      | For short study sessions          | Adds few minutes to the next review time based on difficulty, prioritizing speed over retention. |
+
+
+Furthermore, you could also pass your own algorithm like below. Both parameters are optional:
 
 ```javascript
 function myAlgorithm(card, difficulty) {
     return "use the card parameter to update the state of the card"
 }
 
-const flashcards = SpaceRepetition([], myAlgorithm)
+new SpaceRepetition([], myAlgorithm);
 ```
 
 ---
